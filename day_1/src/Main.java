@@ -1,35 +1,42 @@
 import java.util.Scanner;
+// Создаем собственный класс вектор для последующей работы
 class Vector{
     Scanner scanner = new Scanner(System.in);
     private int size;
     private int[] base;
 
+    // Прописываем конструктор по умолчанию
     Vector(){
         this.size = 10;
         base = new int[size];
     }
 
+    // Прописываем конструктор по значению
     Vector(int size){
         this.size = size;
         base = new int[size];
     }
 
+    // Прописываем конструктор копирования
     Vector(Vector vector){
         this.size = vector.size;
         base = new int[size];
         for(int i = 0; i < size; i++){
-            base[i] = vector.get_elem(i);
+            this.base[i] = vector.get_elem(i);
         }
     }
 
+    // Метод для получения размера
     public int get_size(){
         return this.size;
     }
 
+    // Метод для получения конкретного элемента
     public int get_elem(int i){
         return this.base[i];
     }
 
+    // Метод для установления значения на определенной позиции
     public void set_elem(int i, int elem){
         this.base[i] = elem;
     }
@@ -54,13 +61,20 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        // Создаем объект класса вектора, вводим и выводим значения
         System.out.println("Enter The Size Of Array: ");
         int size;
         size = scanner.nextInt();
+        if (size < 0){
+            System.out.println("Wrong Value");
+            return;
+        }
+
         Vector vec = new Vector(size);
         vec.input();
         vec.output();
 
+        // Даем пользователю возможность выбрать метод сортировки
         System.out.println("1. QuickSort || 2. MergeSort || 3. Exit");
         int choose;
         choose = scanner.nextInt();
@@ -79,6 +93,7 @@ public class Main {
     }
 
     public static void quickSort(Vector vector, int left, int right) {
+
         if(left >= right) {
             return;
         } else {
