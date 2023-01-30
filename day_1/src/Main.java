@@ -17,6 +17,9 @@ class Vector{
     Vector(Vector vector){
         this.size = vector.size;
         base = new int[size];
+        for(int i = 0; i < size; i++){
+            base[i] = vector.get_elem(i);
+        }
     }
 
     public int get_size(){
@@ -47,20 +50,58 @@ class Vector{
     }
 }
 
-
 public class Main {
     public static void main(String[] args) {
-        Vector vec = new Vector(3);
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter The Size Of Array: ");
+        int size;
+        size = scanner.nextInt();
+        Vector vec = new Vector(size);
         vec.input();
         vec.output();
-        mergeSort(vec, 0, vec.get_size() - 1);
-        vec.output();
+
+        System.out.println("1. QuickSort || 2. MergeSort || 3. Exit");
+        int choose;
+        choose = scanner.nextInt();
+        switch (choose) {
+            case (1) -> {
+                quickSort(vec, 0, vec.get_size() - 1);
+                vec.output();
+            }
+            case (2) -> {
+                mergeSort(vec, 0, vec.get_size() - 1);
+                vec.output();
+            }
+            case (3) -> System.exit(0);
+            default -> System.out.println("You Do not Choose Any Of Type Of Sorting!");
+        }
     }
 
-    public static void quickSort(Vector vector) {
-
+    public static void quickSort(Vector vector, int left, int right) {
+        if(left >= right) {
+            return;
+        } else {
+            int part = partition(vector, left, right);
+            quickSort(vector, left, part - 1);
+            quickSort(vector, part + 1, right);
+        }
     }
-
+    static int partition(Vector vector, int left, int right) {
+        int counter = left;
+        for (int i = left; i < right; i++) {
+            if (vector.get_elem(i) < vector.get_elem(right)) {
+                int temp = vector.get_elem(counter);
+                vector.set_elem(counter, vector.get_elem(i));
+                vector.set_elem(i, temp);
+                counter++;
+            }
+        }
+        int temp = vector.get_elem(right);
+        vector.set_elem(right, vector.get_elem(counter));
+        vector.set_elem(counter, temp);
+        return counter;
+    }
     public static void mergeSort(Vector vector, int left, int right) {
         if(left >= right) {
             return;
@@ -71,13 +112,12 @@ public class Main {
             merge(vector, left, middle, right);
         }
     }
-
     public static void merge(Vector vector, int left, int middle, int right) {
         int leftLength = middle - left + 1;
         int rightLength = right - middle;
 
-        int leftVector[] = new int[leftLength];
-        int rightVector[] = new int[rightLength];
+        int[] leftVector = new int[leftLength];
+        int[] rightVector = new int[rightLength];
 
         for(int i = 0; i < leftLength; i++){
             leftVector[i] = vector.get_elem(left + i);
